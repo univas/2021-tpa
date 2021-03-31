@@ -6,22 +6,22 @@ const listAll = (req, res) => {
 }
 
 const create = (req, res) => {
-  const product = req.body
-  my_database.set(product.id, product)
-  res.status(201).send(product)
+  const sale = req.body
+  my_database.set(sale.id, sale)
+  res.status(201).send(sale)
 }
 
 const update = (req, res) => {
   const id = parseInt(req.params.id, 10)
 
   if (my_database.has(id)) {
-    const product = req.body
-    product.id = id
-    my_database.set(id, product)
-    res.status(200).send(product)
+    const sale = req.body
+    sale.id = id
+    my_database.set(id, sale)
+    res.status(200).send(sale)
   } else {
     res.status(404).send({
-      message: `product with id (${id}) not found`
+      message: `sale with id (${id}) not found`
     })
   }
 }
@@ -30,12 +30,12 @@ const remove = (req, res) => {
   const id = parseInt(req.params.id, 10)
 
   if (my_database.has(id)) {
-    const product = my_database.get(id)
-    my_database.delete(product.id)
-    res.status(200).send(product)
+    const sale = my_database.get(id)
+    my_database.delete(sale.id)
+    res.status(200).send(sale)
   } else {
     res.status(404).send({
-      message: `product with id (${id}) not found`
+      message: `sale with id (${id}) not found`
     })
   }
 }

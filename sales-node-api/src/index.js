@@ -1,5 +1,7 @@
 const express = require('express')
 const productRoute = require('./routes/product.route')
+const customerRoute = require('./routes/customer.route')
+const saleRoute = require('./routes/sale.route')
 
 const app = express()
 
@@ -9,6 +11,8 @@ app.get('/', (req, res) => {
 
 app.use(express.json())
 app.use('/products', productRoute)
+app.use('/customers', customerRoute)
+app.use('/sales', saleRoute)
 
 app.listen(8080, () => {
   console.log('Server started on port 8080')

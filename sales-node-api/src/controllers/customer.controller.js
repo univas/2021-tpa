@@ -6,22 +6,22 @@ const listAll = (req, res) => {
 }
 
 const create = (req, res) => {
-  const product = req.body
-  my_database.set(product.id, product)
-  res.status(201).send(product)
+  const customer = req.body
+  my_database.set(customer.id, customer)
+  res.status(201).send(customer)
 }
 
 const update = (req, res) => {
   const id = parseInt(req.params.id, 10)
 
   if (my_database.has(id)) {
-    const product = req.body
-    product.id = id
-    my_database.set(id, product)
-    res.status(200).send(product)
+    const customer = req.body
+    customer.id = id
+    my_database.set(id, customer)
+    res.status(200).send(customer)
   } else {
     res.status(404).send({
-      message: `product with id (${id}) not found`
+      message: `customer with id (${id}) not found`
     })
   }
 }
@@ -30,12 +30,12 @@ const remove = (req, res) => {
   const id = parseInt(req.params.id, 10)
 
   if (my_database.has(id)) {
-    const product = my_database.get(id)
-    my_database.delete(product.id)
-    res.status(200).send(product)
+    const customer = my_database.get(id)
+    my_database.delete(customer.id)
+    res.status(200).send(customer)
   } else {
     res.status(404).send({
-      message: `product with id (${id}) not found`
+      message: `customer with id (${id}) not found`
     })
   }
 }
