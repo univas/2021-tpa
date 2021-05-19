@@ -25,9 +25,6 @@ public class CustomerController {
 	
 	@GetMapping
 	public ResponseEntity<Collection<Customer>> listCustomers() {
-		if (repository.list().isEmpty()) {
-			return ResponseEntity.noContent().build();
-		}
 		return ResponseEntity.ok(repository.list());
 	}
 	
