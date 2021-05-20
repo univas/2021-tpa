@@ -20,7 +20,7 @@ describe('Customer Controller', () => {
 
     controller.create(req, res)
 
-    expect(res.send.calledOnce).to.be.false
+    expect(res.send.calledOnce).to.be.true
     expect(res.send.firstCall.args[0]).to.equal(myCustomer)
   })
 
