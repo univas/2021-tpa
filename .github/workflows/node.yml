@@ -18,6 +18,7 @@ jobs:
 
       - name: install dependencies
         run: npm install
+        working-directory: ./sales-node-api
 
       - name: run unit test with Mocha
         run: npm test
