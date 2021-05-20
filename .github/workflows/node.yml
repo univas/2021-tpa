@@ -20,3 +20,4 @@ jobs:
 
       - name: run unit test with Mocha
         run: npm test
+        working-directory: ./sales-node-api
