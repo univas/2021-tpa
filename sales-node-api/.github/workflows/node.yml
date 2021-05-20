@@ -1,0 +1,22 @@
+name: Unit Test - Node
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout project
+        uses: actions/checkout@v2
+
+      - name: set up node version
+        with:
+          node-version: '14'
+
+      - name: install dependencies
+        run: npm install
+
+      - name: run unit test with Mocha
+        run: npm test
