@@ -35,7 +35,7 @@ public class CustomerControllerTest {
 		
 		Assertions.assertEquals(5, responseEntity.getBody().size());
 		
-		Mockito.verify(repository, Mockito.times(1)).list();
+		Mockito.verify(repository, Mockito.times(5)).list();
 	}
 	
 	@Test
