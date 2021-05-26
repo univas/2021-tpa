@@ -1,0 +1,24 @@
+name: Generate Docker Image
+
+on: [push]
+
+jobs:
+  push_to_registry:
+    name: Setup Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+
+      - name: Log in into Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.username }}
+          password: ${{ secrets.password }}
+
+      - name: Send image to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: rodrigoluisfaria/node-sales-api:latest
