@@ -6,7 +6,7 @@ const saleRoute = require('./routes/sale.route')
 const app = express()
 
 app.get('/', (req, res) => {
-  res.send('Hello World!!!!')
+  res.send('Hello World 2.0 from GitHub Action!!!!')
 })
 
 app.use(express.json())
