@@ -18,8 +18,8 @@ jobs:
           password: ${{ secrets.password }}
 
       - name: Send image to Docker Hub
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          file: ./sales-node-api/Dockerfile
-          tags: rodrigoluisfaria/node-sales-api:latest
+        working-directory: ./sales-node-api/
+        run: |
+          docker build -t rodrigoluisfaria/node-sales-api:latest .
+          docker push rodrigoluisfaria/node-sales-api:latest
+
