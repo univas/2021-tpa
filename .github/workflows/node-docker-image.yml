@@ -1,4 +1,4 @@
-name: Generate Docker Image
+name: Generate Node Docker Image
 
 on: [push]
 

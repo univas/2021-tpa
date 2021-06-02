@@ -1,4 +1,4 @@
-name: Generate Docker Image
+name: Generate Java Docker Image
 
 on: [push]
 
