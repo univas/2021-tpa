@@ -27,6 +27,11 @@ public class CustomerController {
 	public ResponseEntity<Collection<Customer>> listCustomers() {
 		return ResponseEntity.ok(repository.list());
 	}
+
+	@GetMapping("/test")
+	public ResponseEntity<String> sayHello() {
+		return ResponseEntity.ok("Hello World from Github Action!!!");
+	}
 	
 	@PostMapping
 	public ResponseEntity<Customer> create(@RequestBody Customer customer) {
