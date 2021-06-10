@@ -1,6 +1,7 @@
 package br.edu.univas.api.sales.controller;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.univas.api.sales.repository.CustomerRepository;
+import br.edu.univas.api.sales.repository.OldCustomerRepository;
+import br.edu.univas.api.sales.service.CustomerService;
 import br.edu.univas.api.sales.vo.Customer;
 
 @RestController
@@ -21,11 +23,19 @@ import br.edu.univas.api.sales.vo.Customer;
 public class CustomerController {
 
 	@Autowired
-	private CustomerRepository repository;
+	private OldCustomerRepository repository;
+	
+	@Autowired
+	private CustomerService customerService;
 	
 	@GetMapping
 	public ResponseEntity<Collection<Customer>> listCustomers() {
 		return ResponseEntity.ok(repository.list());
+	}
+	
+	@GetMapping("/list-all")
+	public ResponseEntity<List<br.edu.univas.api.sales.entity.Customer>> newListCustomer() {
+		return ResponseEntity.ok(customerService.listAll());
 	}
 
 	@GetMapping("/test")

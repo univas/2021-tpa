@@ -11,7 +11,7 @@ import br.edu.univas.api.sales.vo.Customer;
 public class CustomerRepositoryTest {
 
 	@InjectMocks
-	private CustomerRepository repository;
+	private OldCustomerRepository repository;
 	
 	@Test	
 	public void create_shouldSaveCustomer() {

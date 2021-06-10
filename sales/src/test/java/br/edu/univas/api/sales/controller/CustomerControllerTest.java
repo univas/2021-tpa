@@ -12,14 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import br.edu.univas.api.sales.repository.CustomerRepository;
+import br.edu.univas.api.sales.repository.OldCustomerRepository;
 import br.edu.univas.api.sales.vo.Customer;
 
 @SpringBootTest
 public class CustomerControllerTest {
 
 	@Mock
-	private CustomerRepository repository;
+	private OldCustomerRepository repository;
 	
 	@InjectMocks
 	private CustomerController controller;
