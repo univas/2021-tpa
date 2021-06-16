@@ -1,7 +1,7 @@
 package br.edu.univas.api.sales.controller;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,14 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import br.edu.univas.api.sales.repository.OldCustomerRepository;
-import br.edu.univas.api.sales.vo.Customer;
+import br.edu.univas.api.sales.entity.Customer;
+import br.edu.univas.api.sales.service.CustomerService;
 
 @SpringBootTest
 public class CustomerControllerTest {
 
 	@Mock
-	private OldCustomerRepository repository;
+	private CustomerService customerService;
 	
 	@InjectMocks
 	private CustomerController controller;
@@ -29,17 +29,17 @@ public class CustomerControllerTest {
 		List<Customer> customerList = List.of(new Customer(), new Customer(),
 				new Customer(), new Customer(),new Customer());
 		
-		Mockito.when(repository.list()).thenReturn(customerList);
+		Mockito.when(customerService.listAll()).thenReturn(customerList);
 		
-		ResponseEntity<Collection<Customer>> responseEntity = controller.listCustomers();
+		ResponseEntity<List<Customer>> responseEntity = controller.listAll();
 		
 		Assertions.assertEquals(5, responseEntity.getBody().size());
 		
-		Mockito.verify(repository, Mockito.times(1)).list();
+		Mockito.verify(customerService, Mockito.times(1)).listAll();
 	}
 	
 	@Test
-	public void create_whenPassValidCustomer_shouldCallCreateFromRepository() {
+	public void create_whenPassValidCustomer_shouldCallCreateFromService() {
 		Customer customer = new Customer();
 		customer.setId(123);
 		customer.setCpf("123456");
@@ -55,7 +55,7 @@ public class CustomerControllerTest {
 		Assertions.assertEquals(customer.getEmail(), customerReturned.getEmail());
 		Assertions.assertEquals(customer.getNome(), customerReturned.getNome());
 		
-		Mockito.verify(repository, Mockito.times(1)).create(customer);
+		Mockito.verify(customerService, Mockito.times(1)).save(customer);
 	}
 	
 	@Test
@@ -68,7 +68,9 @@ public class CustomerControllerTest {
 		customer.setEmail("email@email.com");
 		customer.setNome("Nome");
 		
-		Mockito.when(repository.getById(customerId)).thenReturn(new Customer());
+		Optional<Customer> optCustomer = Optional.of(new Customer());
+		
+		Mockito.when(customerService.findById(customerId)).thenReturn(optCustomer);
 		
 		ResponseEntity<Customer> responseEntity = controller.update(customerId, customer);
 		
@@ -76,8 +78,8 @@ public class CustomerControllerTest {
 		Assertions.assertNotNull(customerReturned);
 		Assertions.assertEquals(customerId, customerReturned.getId());
 		
-		Mockito.verify(repository, Mockito.times(1)).getById(customerId);
-		Mockito.verify(repository, Mockito.times(1)).update(customer);				
+		Mockito.verify(customerService, Mockito.times(1)).findById(customerId);
+		Mockito.verify(customerService, Mockito.times(1)).save(customer);				
 	}
 	
 	@Test
@@ -86,15 +88,15 @@ public class CustomerControllerTest {
 		
 		Customer customer = new Customer();
 		
-		Mockito.when(repository.getById(customerId)).thenReturn(null);
+		Mockito.when(customerService.findById(customerId)).thenReturn(Optional.empty());
 		
 		ResponseEntity<Customer> responseEntity = controller.update(customerId, customer);
 		
 		Assertions.assertNull(responseEntity.getBody());
 		Assertions.assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
 		
-		Mockito.verify(repository, Mockito.times(1)).getById(customerId);
-		Mockito.verify(repository, Mockito.never()).update(customer);
+		Mockito.verify(customerService, Mockito.times(1)).findById(customerId);
+		Mockito.verify(customerService, Mockito.never()).save(customer);
 	}
 	
 	@Test
@@ -107,28 +109,30 @@ public class CustomerControllerTest {
 		customer.setEmail("Email@email.com");
 		customer.setCpf("12345678999");
 		
-		Mockito.when(repository.getById(customerId)).thenReturn(customer);
+		Optional<Customer> optCustomer = Optional.of(customer);
+		
+		Mockito.when(customerService.findById(customerId)).thenReturn(optCustomer);
 		
 		ResponseEntity<Customer> customerReturned = controller.delete(customerId);
 		
 		Assertions.assertEquals(customer, customerReturned.getBody());
 		
-		Mockito.verify(repository, Mockito.times(1)).getById(customerId);
-		Mockito.verify(repository, Mockito.times(1)).delete(customerId);
+		Mockito.verify(customerService, Mockito.times(1)).findById(customerId);
+		Mockito.verify(customerService, Mockito.times(1)).delete(customerId);
 	}
 	
 	@Test
 	public void delete_whenPassInvalidId_shouldNotCallDeleteMethod() {
 		Integer customerId = 123;
 		
-		Mockito.when(repository.getById(customerId)).thenReturn(null);
+		Mockito.when(customerService.findById(customerId)).thenReturn(Optional.empty());
 		
 		ResponseEntity<Customer> customerReturned = controller.delete(customerId);
 		
 		Assertions.assertNull(customerReturned.getBody());
 		Assertions.assertEquals(HttpStatus.NOT_FOUND, customerReturned.getStatusCode());
 		
-		Mockito.verify(repository, Mockito.times(1)).getById(customerId);
-		Mockito.verify(repository, Mockito.never()).delete(customerId);
+		Mockito.verify(customerService, Mockito.times(1)).findById(customerId);
+		Mockito.verify(customerService, Mockito.never()).delete(customerId);
 	}
 }

@@ -1,6 +1,7 @@
 package br.edu.univas.api.sales.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -22,4 +23,15 @@ public class CustomerService {
 				.collect(Collectors.toList());
 	}
 	
+	public Customer save(Customer customer) {
+		return customerRepository.save(customer);
+	}
+	
+	public Optional<Customer> findById(Integer id) {
+		return customerRepository.findById(id);
+	}
+	
+	public void delete(Integer id) {
+		customerRepository.deleteById(id);
+	}
 }

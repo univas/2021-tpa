@@ -1,7 +1,7 @@
 package br.edu.univas.api.sales.controller;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,47 +14,38 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.univas.api.sales.repository.OldCustomerRepository;
+import br.edu.univas.api.sales.entity.Customer;
 import br.edu.univas.api.sales.service.CustomerService;
-import br.edu.univas.api.sales.vo.Customer;
 
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
-
-	@Autowired
-	private OldCustomerRepository repository;
 	
 	@Autowired
 	private CustomerService customerService;
 	
-	@GetMapping
-	public ResponseEntity<Collection<Customer>> listCustomers() {
-		return ResponseEntity.ok(repository.list());
-	}
-	
-	@GetMapping("/list-all")
-	public ResponseEntity<List<br.edu.univas.api.sales.entity.Customer>> newListCustomer() {
-		return ResponseEntity.ok(customerService.listAll());
-	}
-
 	@GetMapping("/test")
 	public ResponseEntity<String> sayHello() {
 		return ResponseEntity.ok("Hello World from Github Action!!!");
 	}
 	
+	@GetMapping()
+	public ResponseEntity<List<Customer>> listAll() {
+		return ResponseEntity.ok(customerService.listAll());
+	}
+	
 	@PostMapping
 	public ResponseEntity<Customer> create(@RequestBody Customer customer) {
-		repository.create(customer);
+		customerService.save(customer);
 		return ResponseEntity.ok(customer);
 	}
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<Customer> update(@PathVariable Integer id, @RequestBody Customer customer) {
-		Customer oldCustomer = repository.getById(id);
-		if (oldCustomer != null) {
+		Optional<Customer> oldCustomer = customerService.findById(id);
+		if (oldCustomer.isPresent()) {
 			customer.setId(id);
-			repository.update(customer);
+			customerService.save(customer);
 			return ResponseEntity.ok(customer);
 		}
 		
@@ -63,10 +54,10 @@ public class CustomerController {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Customer> delete(@PathVariable Integer id) {
-		Customer customer = repository.getById(id);
-		if (customer != null) {
-			repository.delete(id);
-			return ResponseEntity.ok(customer);
+		Optional<Customer> customer = customerService.findById(id);
+		if (customer.isPresent()) {
+			customerService.delete(id);
+			return ResponseEntity.ok(customer.get());
 		}
 		
 		return ResponseEntity.notFound().build();
