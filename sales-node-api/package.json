@@ -13,6 +13,9 @@
     "chai": "^4.3.4",
     "express": "^4.17.1",
     "mocha": "^8.4.0",
+    "pg": "^8.6.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.6.2",
     "sinon": "^10.0.0"
   },
   "devDependencies": {
